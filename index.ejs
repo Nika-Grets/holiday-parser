@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <div>
+        <h1><%= title %></h1>
+        
+        <div>
+            Сегодня: <%= currentDate %>
+        </div>
+        
+        <form action="/search" method="get">
+            <div>
+                <label for="date">Выберите дату (2026 год):</label>
+                <input type="date" id="date" name="date" 
+                        value="2026-01-25" 
+                        min="2026-01-01" max="2026-12-31" required>
+            </div>
+            
+            <button type="submit">Найти праздники</button>
+        </form>
+        
+    </div>
+    
+    <script>
+        // Преобразуем дату в формат DD-MM для API
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const dateInput = document.getElementById('date');
+            const date = new Date(dateInput.value);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+// Создаем скрытое поле с датой в формате DD-MM
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'date';
+            hiddenInput.value = `${day}-${month}`;
+            this.appendChild(hiddenInput);
+            
+            // Удаляем оригинальное поле даты
+            dateInput.remove();
+        });
+    </script>
+</body>
+</html>
